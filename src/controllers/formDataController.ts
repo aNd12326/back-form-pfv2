@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import e, { Request, Response, NextFunction } from 'express';
 import FormModel, { FormData } from '../models/form';
 
 // Create a Data Form
@@ -9,8 +9,7 @@ export const createFormData = async (
 ) => {
   try {
     const { name, email, message } = req.body;
-
-    const newFormData = new FormModel({
+    const newFormData: FormData = new FormModel({
       name,
       email,
       message,
