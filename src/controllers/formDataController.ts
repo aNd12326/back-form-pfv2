@@ -1,24 +1,25 @@
-import { Request, Response, NextFunction } from "express";
-import { FormData, formData } from "../models/form";
+import { Request, Response, NextFunction } from 'express';
+import FormModel, { FormData } from '../models/form';
 
 // Create a Data Form
-export const createFormData = (
+export const createFormData = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
     const { name, email, message } = req.body;
-    const newFormData: FormData = {
-      id: formData.length + 1,
+
+    const newFormData = new FormModel({
       name,
       email,
       message,
-    };
-    formData.push(newFormData);
+    });
+
+    const savedData = await newFormData.save();
     res.status(201).json({
-      message: "Form data created successfully",
-      data: newFormData,
+      message: 'Form data created successfully',
+      data: savedData,
     });
   } catch (error) {
     next(error);
@@ -26,14 +27,16 @@ export const createFormData = (
 };
 
 // Read all items
-export const getAllFormData = (
+export const getAllFormData = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
+    const formData = await FormModel.find();
+    // console.log(formData)
     res.status(200).json({
-      message: "Form data retrieved successfully",
+      message: 'Form data retrieved successfully',
       data: formData,
     });
   } catch (error) {
